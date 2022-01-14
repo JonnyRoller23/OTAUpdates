@@ -12,11 +12,11 @@ fi
 FILENAME=lineage-18.1-"${d}"-UNOFFICIAL-"${DEVICE}".zip
 
 oldd=$(grep filename $DEVICE.json | cut -d '-' -f 3)
-md5=$(md5sum ~/lineageos/out/target/product/$DEVICE/$FILENAME | cut -d ' ' -f 1)
+md5=$(md5sum ~/root//home/jenkins/workspace/LineageOS-18.1-olives/out/target/product/$DEVICE/$FILENAME | cut -d ' ' -f 1)
 oldmd5=$(grep '"id"' $DEVICE.json | cut -d':' -f 2)
-utc=$(grep ro.build.date.utc ~/lineageos/out/target/product/$DEVICE/system/build.prop | cut -d '=' -f 2)
+utc=$(grep ro.build.date.utc ~/root/home/jenkins/workspace/LineageOS-18.1-olives/out/target/product/$DEVICE/system/build.prop | cut -d '=' -f 2)
 oldutc=$(grep datetime $DEVICE.json | cut -d ':' -f 2)
-size=$(wc -c ~/lineageos/out/target/product/$DEVICE/$FILENAME | cut -d ' ' -f 1)
+size=$(wc -c ~/root/home/jenkins/workspace/LineageOS-18.1-olives/out/target/product/$DEVICE/$FILENAME | cut -d ' ' -f 1)
 oldsize=$(grep size $DEVICE.json | cut -d ':' -f 2)
 oldurl=$(grep url $DEVICE.json | cut -d ' ' -f 9)
 oldtag=$(grep url $DEVICE.json | cut -d '/' -f 8)
@@ -29,7 +29,7 @@ sed -i "s!${oldsize}! \"${size}\",!g" $DEVICE.json
 d2=$(date +%Y%m%d-%H%M)
 
 TAG=$(echo "${DEVICE}-${d2}")
-url="https://github.com/meizucustoms/OTAUpdates/releases/download/${TAG}/${FILENAME}"
+url="https://github.com/JonnnyRoller23/OTAUpdates/releases/download/${TAG}/${FILENAME}"
 sed -i "s!${oldurl}!\"${url}\",!g" $DEVICE.json
 
 # Replace tag before date and after URL
@@ -43,7 +43,7 @@ code -n -w ~/Lineage-OTA/release_notes.txt
 
 echo "Creating new release..."
 
-gh release create ${TAG} --title ${TAG} -F ~/Lineage-OTA/release_notes.txt ~/lineageos/out/target/product/${DEVICE}/${FILENAME}
+gh release create ${TAG} --title ${TAG} -F ~/Lineage-OTA/release_notes.txt ~/home/jenkins/workspace/LineageOS-18.1-olives/out/target/product/${DEVICE}/${FILENAME}
 else
 echo "! onlyjson mode"
 TAG="$(gh release list | grep Latest | sed 's/.*Latest.//g;s/202[0-9]\-.*//g;s/[[:space:]]//g')"
